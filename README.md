@@ -3,13 +3,7 @@
 Comandos para rodar o projeto !
 
 - `yarn`
-- `npx prisma generate`
 - `yarn dev`
-
-Comandos para rodar o banco de dados !
-
-- `npx prisma generate`
-- `npx prisma db push`
 
 # tipos de commits
 

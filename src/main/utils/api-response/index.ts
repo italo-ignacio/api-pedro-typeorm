@@ -7,7 +7,7 @@ import type { messageTypeResponse } from '@domain/errors';
 
 export const created = ({
   response,
-  payload = {}
+  payload = messages.default.successfullyCreated
 }: {
   response: Response;
   payload?: object;
@@ -130,25 +130,13 @@ export const timeout = ({
 
 export const messageErrorResponse = ({
   error,
-  response,
-  entity
+  response
 }: {
   error: unknown;
-  entity?: messageTypeResponse;
   response: Response;
 }): Response => {
-  const newError = error as { message?: string; meta?: { cause: string; modelName: string } };
+  const newError = error as { message?: string };
   let message: messageTypeResponse | undefined;
-
-  if (newError?.meta?.cause === 'Record to update not found.')
-    return notFound({
-      entity: entity ?? {
-        english: newError?.meta?.modelName,
-        portuguese: newError?.meta?.modelName
-      },
-      message,
-      response
-    });
 
   if (error instanceof Error)
     // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions

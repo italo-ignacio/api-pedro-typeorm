@@ -17,8 +17,7 @@
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
-    "prettier",
-    "standard-with-typescript"
+    "prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -459,7 +458,7 @@
     "no-extra-bind": "error",
     "no-extra-boolean-cast": "error",
     "no-extra-label": "error",
-    "no-extra-parens": "error",
+    "no-extra-parens": "off",
     "no-extra-semi": "off",
     "no-fallthrough": "error",
     "no-floating-decimal": "error",
@@ -691,16 +690,8 @@
       }
     },
     {
-      "files": ["**/prisma.service.ts"],
-      "rules": { "@typescript-eslint/no-misused-promises": "off" }
-    },
-    {
-      "files": ["**/entity/**.ts"],
+      "files": ["**/entity/**/**.ts"],
       "rules": { "max-params": "off", "import/no-cycle": "off" }
-    },
-    {
-      "files": ["**/data/search/**/*.ts"],
-      "rules": { "sort-keys-fix/sort-keys-fix": "off" }
     }
   ],
   "settings": {
@@ -723,7 +714,6 @@
     "*.local",
     "*.config.js",
     "*.json",
-    "*.prisma",
     "**/migrations/*",
     "/build/**",
     "/coverage/**",

@@ -25,9 +25,17 @@ export const defaultMessages = {
     english: 'Request successfully',
     portuguese: 'Requisição bem sucedida'
   },
+  successfullyCreated: {
+    english: 'Successfully Created',
+    portuguese: 'Criado com sucesso'
+  },
   successfullyDeleted: {
     english: 'Successfully Deleted',
     portuguese: 'Excluído com sucesso'
+  },
+  successfullyUpdated: {
+    english: 'Successfully Updated',
+    portuguese: 'Atualizado com sucesso'
   },
   timeout: {
     english: 'Request has expired. Try again later',
@@ -47,10 +55,6 @@ export const defaultMessages = {
       english: 'Error during file upload',
       portuguese: 'Erro durante o upload do arquivo'
     };
-  },
-  userAlreadyExists: {
-    english: 'User already exists',
-    portuguese: 'Usuário já existe'
   },
   validationErrorResponse: {
     english: 'Failed during form validation',

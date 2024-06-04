@@ -1,12 +1,9 @@
-import type { User } from '@prisma/client';
+import type { tokenInput } from '@domain/token';
 
 declare global {
   namespace Express {
     interface Request {
-      user: Pick<
-        User,
-        'createdAt' | 'email' | 'finishedAt' | 'id' | 'name' | 'phone' | 'role' | 'updatedAt'
-      >;
+      user: tokenInput;
     }
   }
 }

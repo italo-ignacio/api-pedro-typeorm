@@ -1,4 +1,4 @@
-import type { Role } from '@prisma/client';
+import type { Role } from '@domain/enum';
 
 export interface tokenInput {
   id: number;

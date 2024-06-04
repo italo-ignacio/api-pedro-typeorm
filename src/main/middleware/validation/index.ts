@@ -1,7 +1,8 @@
 import { DataSource } from '@infra/database';
+import { IsNull } from 'typeorm';
+import { UserEntity } from '@entity/user';
 import { env } from '@main/config/env';
 import { errorLogger, removeBearer, unauthorized } from '@main/utils';
-import { userFindParams } from '@data/search';
 import { verify } from 'jsonwebtoken';
 import type { Controller } from '@domain/protocols';
 import type { NextFunction, Request, Response } from 'express';
@@ -30,19 +31,16 @@ export const validateTokenMiddleware: Controller =
       )
         return unauthorized({ response });
 
-      const account = await DataSource.user.findFirst({
-        select: userFindParams,
-        where: {
-          AND: {
-            ...user,
-            finishedAt: null
-          }
-        }
+      const userRepository = DataSource.getRepository(UserEntity);
+
+      const account = await userRepository.findOne({
+        select: { id: true },
+        where: { ...user, finishedAt: IsNull() }
       });
 
       if (account === null) return unauthorized({ response });
 
-      Object.assign(request, { user: account });
+      Object.assign(request, { user });
       next();
     } catch (error) {
       errorLogger(error);

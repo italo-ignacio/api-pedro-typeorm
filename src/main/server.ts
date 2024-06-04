@@ -3,13 +3,13 @@ import { DataSource } from '@infra/database';
 import { env } from '@main/config';
 import { errorLogger } from '@main/utils';
 
-DataSource.$connect()
+DataSource.initialize()
   .then(async () => {
     if (typeof env.API_PORT === 'string') {
       const { http } = await import('@main/config');
 
       http.listen(env.API_PORT, () => {
-        console.info(`Server started at http://localhost:${env.API_PORT}`);
+        console.info(`Server started at http://localhost:${env.API_PORT}/api-docs`);
       });
     } else console.info('Environment variables missing');
   })

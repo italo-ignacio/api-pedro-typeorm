@@ -3,8 +3,7 @@ FROM node:18.15.0-alpine3.16
 WORKDIR /app
 
 COPY package.json ./
-COPY tsconfig.json ./
-COPY ./prisma ./prisma
+COPY tsconfig.json ./ 
 
 RUN npm install --omit=dev
 

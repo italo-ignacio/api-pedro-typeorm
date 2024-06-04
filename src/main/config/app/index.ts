@@ -2,7 +2,7 @@ import { createServer } from 'http';
 import { options } from '@main/routes/swagger';
 import { setupMiddleware } from '@main/config/middleware';
 import { setupRoutes } from '@main/config/routes';
-import cors from 'cors';
+// import cors from 'cors';
 import express from 'express';
 import expressJSDocSwagger from 'express-jsdoc-swagger';
 
@@ -12,7 +12,7 @@ expressJSDocSwagger(app)(options);
 
 setupMiddleware(app);
 
-app.use(cors());
+// app.use(cors());
 
 setupRoutes(app);
 

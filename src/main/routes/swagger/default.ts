@@ -37,3 +37,24 @@
  * @property {Messages} message
  * @property {string} status
  */
+
+/**
+ * @typedef {object} DeleteResponse
+ * @property {Messages} message
+ * @property {Messages} payload
+ * @property {string} status
+ */
+
+/**
+ * @typedef {object} InsertResponse
+ * @property {Messages} message
+ * @property {Messages} payload
+ * @property {string} status
+ */
+
+/**
+ * @typedef {object} UpdateResponse
+ * @property {Messages} message
+ * @property {Messages} payload
+ * @property {string} status
+ */

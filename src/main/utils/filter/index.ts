@@ -7,13 +7,12 @@ interface GetPageAndLimitInput<QueryType extends string> {
     sort?: 'asc' | 'desc';
     startDate?: string;
     endDate?: string;
-    history?: string;
   };
   list: QueryType[];
 }
 
 interface GetPageAndLimitOutput {
-  orderBy: object;
+  order: object;
   where: object;
 }
 
@@ -26,7 +25,7 @@ const getDate = (item: string, isEnd?: boolean): Date | string | null => {
 
   if (isEnd ?? false) return date.toISOString().replace('T00:00:00.000Z', 'T23:59:59.999Z');
 
-  return date;
+  return date.toISOString();
 };
 
 interface queryProps {
@@ -44,12 +43,11 @@ export const getGenericFilter = <QueryType extends string>({
   list
 }: GetPageAndLimitInput<QueryType>): GetPageAndLimitOutput => {
   const orderBy = {};
-  const where: object[] = [];
-
-  if (String(query.history) !== 'true')
-    where.push({
+  const where: object[] = [
+    {
       finishedAt: null
-    });
+    }
+  ];
 
   if (typeof query.startDate === 'string') {
     const startDate = getDate(query.startDate);
@@ -86,18 +84,6 @@ export const getGenericFilter = <QueryType extends string>({
             equals: query[item]
           }
         });
-      else if (item.endsWith('GreaterThan'))
-        where.push({
-          [item.replace('GreaterThan', '')]: {
-            gte: Number(query[item])
-          }
-        });
-      else if (item.endsWith('LessThan'))
-        where.push({
-          [item.replace('LessThan', '')]: {
-            lte: Number(query[item])
-          }
-        });
       else if (item.endsWith('Id'))
         where.push({
           [item]: {
@@ -105,13 +91,6 @@ export const getGenericFilter = <QueryType extends string>({
           }
         });
       else if (item === 'phone')
-        where.push({
-          [item]: {
-            contains: query[item]?.replace(/\D/gu, ''),
-            mode: 'insensitive'
-          }
-        });
-      else if (item === 'zipCode')
         where.push({
           [item]: {
             contains: query[item]?.replace(/\D/gu, ''),
@@ -129,9 +108,7 @@ export const getGenericFilter = <QueryType extends string>({
   if (isObjectEmpty(orderBy)) Object.assign(orderBy, { createdAt: 'desc' });
 
   return {
-    orderBy,
-    where: {
-      AND: where
-    }
+    order: orderBy,
+    where
   };
 };
