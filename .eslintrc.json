@@ -692,6 +692,10 @@
     {
       "files": ["**/entity/**/**.ts"],
       "rules": { "max-params": "off", "import/no-cycle": "off" }
+    },
+    {
+      "files": ["**/data/search/**/*.ts"],
+      "rules": { "import/no-cycle": "off" }
     }
   ],
   "settings": {

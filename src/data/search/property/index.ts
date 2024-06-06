@@ -1,14 +1,17 @@
 import { addressFindParams } from '../address';
+import { flockFindParams } from '../flock';
 import { userFindParams } from '../user';
-import type { Prisma } from '@prisma/client';
+import type { FindOptionsSelect } from 'typeorm';
+import type { PropertyEntity } from '@entity/property';
 
-export const propertyFindParams: Prisma.PropertySelect = {
+export const propertyFindParams: FindOptionsSelect<PropertyEntity> = {
+  address: addressFindParams,
+  createdAt: true,
+  finishedAt: true,
+  flocks: flockFindParams,
   id: true,
   name: true,
   totalArea: true,
-  address: { select: addressFindParams },
-  user: { select: userFindParams },
-  finishedAt: true,
-  createdAt: true,
-  updatedAt: true
+  updatedAt: true,
+  user: userFindParams
 };

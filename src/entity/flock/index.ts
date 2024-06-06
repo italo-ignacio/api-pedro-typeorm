@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { PropertyEntity } from '@entity/property';
+import { UserEntity } from '@entity/user';
 
 @Entity('flock')
 export class FlockEntity {
@@ -13,6 +16,12 @@ export class FlockEntity {
 
   @Column({ length: 255, type: 'varchar' })
   public name: string;
+
+  @ManyToOne(() => UserEntity, (user) => user.flocks)
+  public user: UserEntity;
+
+  @ManyToOne(() => PropertyEntity, (property) => property.flocks)
+  public property: PropertyEntity;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   public createdAt: Date;
@@ -26,12 +35,16 @@ export class FlockEntity {
   public constructor(
     id: string,
     name: string,
+    user: UserEntity,
+    property: PropertyEntity,
     createdAt: Date,
     updatedAt: Date | null,
     finishedAt: Date | null
   ) {
     this.id = id;
     this.name = name;
+    this.user = user;
+    this.property = property;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.finishedAt = finishedAt;

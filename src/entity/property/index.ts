@@ -5,10 +5,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { FlockEntity } from '@entity/flock';
 import { UserEntity } from '@entity/user';
 
 @Entity('property')
@@ -29,6 +31,9 @@ export class PropertyEntity {
   @ManyToOne(() => UserEntity, (user) => user.properties)
   public user: UserEntity;
 
+  @OneToMany(() => FlockEntity, (flock) => flock.property)
+  public flocks: FlockEntity[];
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   public createdAt: Date;
 
@@ -44,6 +49,7 @@ export class PropertyEntity {
     totalArea: number,
     address: AddressEntity,
     user: UserEntity,
+    flocks: FlockEntity[],
     createdAt: Date,
     updatedAt: Date | null,
     finishedAt: Date | null
@@ -53,6 +59,7 @@ export class PropertyEntity {
     this.totalArea = totalArea;
     this.address = address;
     this.user = user;
+    this.flocks = flocks;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.finishedAt = finishedAt;

@@ -6,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { FlockEntity } from '@entity/flock';
+import { ProjectEntity } from '@entity/project';
 import { PropertyEntity } from '@entity/property';
 import { Role } from '@domain/enum';
 
@@ -32,6 +34,12 @@ export class UserEntity {
   @OneToMany(() => PropertyEntity, (property) => property.user)
   public properties: PropertyEntity[];
 
+  @OneToMany(() => ProjectEntity, (project) => project.user)
+  public projects: ProjectEntity[];
+
+  @OneToMany(() => FlockEntity, (flock) => flock.user)
+  public flocks: FlockEntity[];
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   public createdAt: Date;
 
@@ -49,6 +57,8 @@ export class UserEntity {
     phone: string,
     role: Role,
     properties: PropertyEntity[],
+    projects: ProjectEntity[],
+    flocks: FlockEntity[],
     createdAt: Date,
     updatedAt: Date | null,
     finishedAt: Date | null
@@ -60,6 +70,8 @@ export class UserEntity {
     this.phone = phone;
     this.role = role;
     this.properties = properties;
+    this.projects = projects;
+    this.flocks = flocks;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.finishedAt = finishedAt;

@@ -3,7 +3,7 @@ import { userFindParams } from '../user';
 import type { FindOptionsSelect } from 'typeorm';
 import type { FlockEntity } from '@entity/flock';
 
-export const flockFindParams: FindOptionsSelect<FlockEntity> = {
+export const projectFindParams: FindOptionsSelect<FlockEntity> = {
   createdAt: true,
   finishedAt: true,
   id: true,

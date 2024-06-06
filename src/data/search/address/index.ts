@@ -1,14 +1,17 @@
-import type { Prisma } from '@prisma/client';
+import { propertyFindParams } from '../property';
+import type { AddressEntity } from '@entity/address';
+import type { FindOptionsSelect } from 'typeorm';
 
-export const addressFindParams: Prisma.AddressSelect = {
-  id: true,
+export const addressFindParams: FindOptionsSelect<AddressEntity> = {
   city: true,
+  createdAt: true,
+  finishedAt: true,
+  id: true,
   municipality: true,
   number: true,
+  property: propertyFindParams,
   state: true,
   street: true,
-  zipCode: true,
-  finishedAt: true,
-  createdAt: true,
-  updatedAt: true
+  updatedAt: true,
+  zipCode: true
 };
