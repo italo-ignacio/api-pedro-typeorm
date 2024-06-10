@@ -1,19 +1,21 @@
-import { DataSource } from '@infra/database';
-import { Role } from '@prisma/client';
+import { IsNull } from 'typeorm';
+import { Role } from '@domain/enum';
+import { propertyRepository } from '@repository/property';
+import { userNotNull } from '@main/utils';
 import type { Request } from 'express';
 
 export const userIsOwnerOfProperty = async (
   request: Request,
-  propertyId?: number
+  propertyId?: string
 ): Promise<boolean> => {
-  const AND = { finishedAt: null, id: propertyId ?? Number(request.params.id) };
+  if (request.user.role !== Role.ADMIN) return true;
 
-  if (request.user.role !== Role.admin) Object.assign(AND, { userId: Number(request.user.id) });
-
-  const property = await DataSource.property.findFirst({
+  const property = await propertyRepository.findOne({
     select: { id: true },
     where: {
-      AND
+      finishedAt: IsNull(),
+      id: propertyId ?? request.params.id,
+      ...userNotNull(request.user.id)
     }
   });
 

@@ -7,11 +7,6 @@ export const AddressSchema = yup.object().shape({
     length: 50,
     portuguese: 'cidade'
   }),
-  municipality: stringRequired({
-    english: 'municipality',
-    length: 50,
-    portuguese: 'município'
-  }),
   number: numberRequired({
     english: 'number',
     portuguese: 'número'

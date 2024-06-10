@@ -11,6 +11,7 @@ import {
   UpdateDateColumn
 } from 'typeorm';
 import { FlockEntity } from '@entity/flock';
+import { ProjectEntity } from '@entity/project';
 import { UserEntity } from '@entity/user';
 
 @Entity('property')
@@ -24,20 +25,23 @@ export class PropertyEntity {
   @Column({ type: 'float' })
   public totalArea: number;
 
-  @OneToOne(() => AddressEntity, { cascade: true })
+  @OneToOne(() => AddressEntity, { cascade: true, eager: true })
   @JoinColumn()
   public address: AddressEntity;
 
   @ManyToOne(() => UserEntity, (user) => user.properties)
   public user: UserEntity;
 
+  @OneToMany(() => ProjectEntity, (project) => project.property)
+  public projects: ProjectEntity[];
+
   @OneToMany(() => FlockEntity, (flock) => flock.property)
   public flocks: FlockEntity[];
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', nullable: true, type: 'timestamp' })
+  @UpdateDateColumn({ nullable: true, type: 'timestamp' })
   public updatedAt: Date | null;
 
   @Column({ name: 'finishedAt', nullable: true, type: 'timestamp' })
@@ -50,6 +54,7 @@ export class PropertyEntity {
     address: AddressEntity,
     user: UserEntity,
     flocks: FlockEntity[],
+    projects: ProjectEntity[],
     createdAt: Date,
     updatedAt: Date | null,
     finishedAt: Date | null
@@ -60,6 +65,7 @@ export class PropertyEntity {
     this.address = address;
     this.user = user;
     this.flocks = flocks;
+    this.projects = projects;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.finishedAt = finishedAt;

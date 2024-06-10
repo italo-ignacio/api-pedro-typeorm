@@ -52,13 +52,12 @@ model Property {
 }
 
 model Address {
-  id           Int    @id @default(autoincrement())
-  zipCode      String @db.VarChar(9)
-  state        String @db.VarChar(50)
-  city         String @db.VarChar(50)
-  municipality String @db.VarChar(50)
-  street       String @db.VarChar(255)
-  number       String @db.VarChar(50)
+  id      Int    @id @default(autoincrement())
+  zipCode String @db.VarChar(9)
+  state   String @db.VarChar(50)
+  city    String @db.VarChar(50)
+  street  String @db.VarChar(255)
+  number  String @db.VarChar(50)
 
   property Property?
 

@@ -1,18 +1,18 @@
-import { DataSource } from '@infra/database';
-import { Role } from '@prisma/client';
+import { IsNull } from 'typeorm';
+import { Role } from '@domain/enum';
+import { flockRepository } from '@repository/flock';
+import { userNotNull } from '@main/utils';
 import type { Request } from 'express';
 
-export const userIsOwnerOfFlock = async (request: Request, flockId?: number): Promise<boolean> => {
-  if (request.user.role === Role.admin) return true;
+export const userIsOwnerOfFlock = async (request: Request, flockId?: string): Promise<boolean> => {
+  if (request.user.role === Role.ADMIN) return true;
 
-  const flock = await DataSource.flock.findFirst({
+  const flock = await flockRepository.findOne({
     select: { id: true },
     where: {
-      AND: {
-        finishedAt: null,
-        id: flockId ?? Number(request.params.id),
-        userId: Number(request.user.id)
-      }
+      finishedAt: IsNull(),
+      id: flockId ?? request.params.id,
+      ...userNotNull(request.user.id)
     }
   });
 

@@ -1,26 +1,20 @@
-import { DataSource } from '@infra/database';
-import { errorLogger, forbidden, messageErrorResponse, ok } from '@main/utils';
-import { userFindParams } from '@data/search';
+import { forbidden, messageErrorResponse, ok } from '@main/utils';
+import { messages } from '@domain/helpers';
 import { userIsOwner } from '@application/helper';
+import { userRepository } from '@repository/user';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
-
-/**
- * @typedef {object} DeleteUserResponse
- * @property {Messages} message
- * @property {string} status
- */
 
 /**
  * DELETE /user/{id}
  * @summary Delete User
  * @tags User
  * @security BearerAuth
- * @param {integer} id.path.required
- * @return {DeleteUserResponse} 200 - Successful response - application/json
- * @return {BadRequest} 400 - Bad request response - application/json
- * @return {UnauthorizedRequest} 401 - Unauthorized response - application/json
- * @return {ForbiddenRequest} 403 - Forbidden response - application/json
+ * @param {string} id.path.required
+ * @return {DeleteResponse} 200 - Successful response - application/json
+ * @return {BadRequestResponse} 400 - Bad request response - application/json
+ * @return {UnauthorizedResponse} 401 - Unauthorized response - application/json
+ * @return {ForbiddenResponse} 403 - Forbidden response - application/json
  */
 export const deleteUserController: Controller =
   () => async (request: Request, response: Response) => {
@@ -31,38 +25,11 @@ export const deleteUserController: Controller =
           response
         });
 
-      const payload = await DataSource.user.update({
-        data: {
-          finishedAt: new Date(),
-          flocks: {
-            updateMany: {
-              data: { finishedAt: new Date() },
-              where: { userId: Number(request.params.id) }
-            }
-          },
-          projects: {
-            updateMany: {
-              data: { finishedAt: new Date() },
-              where: { userId: Number(request.params.id) }
-            }
-          },
-          properties: {
-            updateMany: {
-              data: { finishedAt: new Date() },
-              where: { userId: Number(request.params.id) }
-            }
-          }
-        },
-        select: userFindParams,
-        where: { id: Number(request.params.id) }
-      });
+      await userRepository.update({ id: request.params.id }, { finishedAt: new Date() });
 
-      return ok({ payload, response });
+      return ok({ payload: messages.default.successfullyDeleted, response });
     } catch (error) {
-      errorLogger(error);
-
       return messageErrorResponse({
-        entity: { english: 'User', portuguese: 'Usuário' },
         error,
         response
       });

@@ -11,14 +11,14 @@
  */
 
 /**
- * @typedef {object} BadRequest
+ * @typedef {object} BadRequestResponse
  * @property {array<Errors>} errors
  * @property {Messages} message
  * @property {string} status
  */
 
 /**
- * @typedef {object} UnauthorizedRequest
+ * @typedef {object} UnauthorizedResponse
  * @property {array<Errors>} errors
  * @property {Messages} message
  * @property {string} status
@@ -32,7 +32,7 @@
  */
 
 /**
- * @typedef {object} ForbiddenRequest
+ * @typedef {object} ForbiddenResponse
  * @property {array<Errors>} errors
  * @property {Messages} message
  * @property {string} status

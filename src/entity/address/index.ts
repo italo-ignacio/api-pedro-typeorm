@@ -22,9 +22,6 @@ export class AddressEntity {
   @Column({ length: 50, type: 'varchar' })
   public city: string;
 
-  @Column({ length: 50, type: 'varchar' })
-  public municipality: string;
-
   @Column({ length: 255, type: 'varchar' })
   public street: string;
 
@@ -34,10 +31,10 @@ export class AddressEntity {
   @OneToOne(() => PropertyEntity, (property) => property.address)
   public property: PropertyEntity;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', nullable: true, type: 'timestamp' })
+  @UpdateDateColumn({ nullable: true, type: 'timestamp' })
   public updatedAt: Date | null;
 
   @Column({ name: 'finishedAt', nullable: true, type: 'timestamp' })
@@ -48,7 +45,6 @@ export class AddressEntity {
     zipCode: string,
     state: string,
     city: string,
-    municipality: string,
     street: string,
     number: string,
     property: PropertyEntity,
@@ -60,7 +56,6 @@ export class AddressEntity {
     this.zipCode = zipCode;
     this.state = state;
     this.city = city;
-    this.municipality = municipality;
     this.street = street;
     this.number = number;
     this.property = property;

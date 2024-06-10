@@ -1,14 +1,13 @@
-import { propertyFindParams } from '../property';
-import { userFindParams } from '../user';
 import type { FindOptionsSelect } from 'typeorm';
-import type { FlockEntity } from '@entity/flock';
+import type { ProjectEntity } from '@entity/project';
 
-export const projectFindParams: FindOptionsSelect<FlockEntity> = {
+export const projectFindParams = (
+  values: FindOptionsSelect<ProjectEntity>
+): FindOptionsSelect<ProjectEntity> => ({
   createdAt: true,
   finishedAt: true,
   id: true,
   name: true,
-  property: propertyFindParams,
   updatedAt: true,
-  user: userFindParams
-};
+  ...values
+});

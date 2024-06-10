@@ -1,26 +1,16 @@
-import { DataSource } from '@infra/database';
-import { Role } from '@prisma/client';
-import { ValidationError } from 'yup';
-import { addressFindParams } from '@data/search';
-import {
-  errorLogger,
-  forbidden,
-  messageErrorResponse,
-  notFound,
-  ok,
-  validationErrorResponse,
-  whereById
-} from '@main/utils';
+import { addressRepository } from '@repository/address';
+import { forbidden, messageErrorResponse, notFound, ok } from '@main/utils';
+import { messages } from '@domain/helpers';
+import { propertyRepository } from '@repository/property';
 import { updateAddressSchema } from '@data/validation';
+import { userIsOwnerOfProperty } from '@application/helper';
 import type { Controller } from '@domain/protocols';
-import type { Optional } from '@prisma/client/runtime/library';
 import type { Request, Response } from 'express';
 
 export interface InsertAddressBody {
   zipCode: string;
   state: string;
   city: string;
-  municipality: string;
   street: string;
   number: number;
 }
@@ -30,16 +20,8 @@ export interface InsertAddressBody {
  * @property {string} zipCode
  * @property {string} state
  * @property {string} city
- * @property {string} municipality
  * @property {string} street
  * @property {number} number
- */
-
-/**
- * @typedef {object} UpdateAddressResponse
- * @property {Messages} message
- * @property {string} status
- * @property {Address} payload
  */
 
 /**
@@ -49,68 +31,49 @@ export interface InsertAddressBody {
  * @security BearerAuth
  * @param {UpdateAddressBody} request.body
  * @param {integer} id.path.required
- * @return {UpdateAddressResponse} 200 - Successful response - application/json
- * @return {BadRequest} 400 - Bad request response - application/json
- * @return {UnauthorizedRequest} 401 - Unauthorized response - application/json
- * @return {ForbiddenRequest} 403 - Forbidden response - application/json
+ * @return {UpdateResponse} 200 - Successful response - application/json
+ * @return {BadRequestResponse} 400 - Bad request response - application/json
+ * @return {UnauthorizedResponse} 401 - Unauthorized response - application/json
+ * @return {ForbiddenResponse} 403 - Forbidden response - application/json
  */
 export const updateAddressController: Controller =
   () => async (request: Request, response: Response) => {
     try {
       await updateAddressSchema.validate(request, { abortEarly: false });
 
-      const address = await DataSource.address.findUnique({
-        select: {
-          property: {
-            select: {
-              userId: true
-            }
-          }
-        },
-        where: whereById(request.params.id)
+      const property = await propertyRepository.findOne({
+        select: { id: true },
+        where: { address: { id: request.params.id } }
       });
 
-      if (address === null)
+      if (property === null)
         return notFound({
           entity: {
-            english: 'Address',
-            portuguese: 'Endereço'
+            english: 'Property',
+            portuguese: 'Propriedade'
           },
           response
         });
 
-      if (address.property?.userId !== request.user.id && request.user.role !== Role.admin)
+      if (!(await userIsOwnerOfProperty(request, property.id)))
         return forbidden({
           message: { english: 'update this address', portuguese: 'atualizar este endereço' },
           response
         });
 
-      const { city, municipality, number, state, street, zipCode } =
-        request.body as Optional<InsertAddressBody>;
+      const { city, number, state, street, zipCode } = request.body as Partial<InsertAddressBody>;
 
       let formattedNumber: string | undefined;
 
       if (typeof number !== 'undefined') formattedNumber = String(number);
 
-      const payload = await DataSource.address.update({
-        data: {
-          city,
-          municipality,
-          number: formattedNumber,
-          state,
-          street,
-          zipCode
-        },
-        select: addressFindParams,
-        where: { id: Number(request.params.id) }
-      });
+      await addressRepository.update(
+        { id: request.params.id },
+        { city, number: formattedNumber, state, street, zipCode }
+      );
 
-      return ok({ payload, response });
+      return ok({ payload: messages.default.successfullyUpdated, response });
     } catch (error) {
-      errorLogger(error);
-
-      if (error instanceof ValidationError) return validationErrorResponse({ error, response });
-
       return messageErrorResponse({ error, response });
     }
   };

@@ -1,26 +1,20 @@
-import { DataSource } from '@infra/database';
-import { errorLogger, forbidden, messageErrorResponse, ok } from '@main/utils';
-import { propertyFindParams } from '@data/search';
+import { forbidden, messageErrorResponse, ok } from '@main/utils';
+import { messages } from '@domain/helpers';
+import { propertyRepository } from '@repository/property';
 import { userIsOwnerOfProperty } from '@application/helper';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
-
-/**
- * @typedef {object} DeletePropertyResponse
- * @property {Messages} message
- * @property {string} status
- */
 
 /**
  * DELETE /property/{id}
  * @summary Delete Property
  * @tags Property
  * @security BearerAuth
- * @param {integer} id.path.required
- * @return {DeletePropertyResponse} 200 - Successful response - application/json
- * @return {BadRequest} 400 - Bad request response - application/json
- * @return {UnauthorizedRequest} 401 - Unauthorized response - application/json
- * @return {ForbiddenRequest} 403 - Forbidden response - application/json
+ * @param {string} id.path.required
+ * @return {DeleteResponse} 200 - Successful response - application/json
+ * @return {BadRequestResponse} 400 - Bad request response - application/json
+ * @return {UnauthorizedResponse} 401 - Unauthorized response - application/json
+ * @return {ForbiddenResponse} 403 - Forbidden response - application/json
  */
 export const deletePropertyController: Controller =
   () => async (request: Request, response: Response) => {
@@ -31,33 +25,11 @@ export const deletePropertyController: Controller =
           response
         });
 
-      const payload = await DataSource.property.update({
-        data: {
-          address: { update: { finishedAt: new Date() } },
-          finishedAt: new Date(),
-          flocks: {
-            updateMany: {
-              data: { finishedAt: new Date() },
-              where: { propertyId: Number(request.params.id) }
-            }
-          },
-          projects: {
-            updateMany: {
-              data: { finishedAt: new Date() },
-              where: { propertyId: Number(request.params.id) }
-            }
-          }
-        },
-        select: propertyFindParams,
-        where: { id: Number(request.params.id) }
-      });
+      await propertyRepository.update({ id: request.params.id }, { finishedAt: new Date() });
 
-      return ok({ payload, response });
+      return ok({ payload: messages.default.successfullyDeleted, response });
     } catch (error) {
-      errorLogger(error);
-
       return messageErrorResponse({
-        entity: { english: 'Property', portuguese: 'Propriedade' },
         error,
         response
       });

@@ -1,13 +1,15 @@
+/* eslint-disable no-undefined */
+import { ValidationError } from 'yup';
+import { errorLogger } from '@main/utils/error-logger';
 import { formatYupError } from '@main/utils/yup-resolver-errors';
 import { messages, statusCodeList } from '@domain/helpers';
-import type { PrettyYupError } from '@main/utils';
+import type { PrettyYupError } from '@main/utils/yup-resolver-errors';
 import type { Response } from 'express';
-import type { ValidationError } from 'yup';
 import type { messageTypeResponse } from '@domain/errors';
 
 export const created = ({
   response,
-  payload = messages.default.successfullyCreated
+  payload = {}
 }: {
   response: Response;
   payload?: object;
@@ -128,32 +130,6 @@ export const timeout = ({
     status: 'timeout'
   });
 
-export const messageErrorResponse = ({
-  error,
-  response
-}: {
-  error: unknown;
-  response: Response;
-}): Response => {
-  const newError = error as { message?: string };
-  let message: messageTypeResponse | undefined;
-
-  if (error instanceof Error)
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    message = newError.message
-      ? {
-          english: newError.message,
-          portuguese: 'Erro interno do servidor...'
-        }
-      : // eslint-disable-next-line no-undefined
-        undefined;
-
-  return badRequest({
-    message,
-    response
-  });
-};
-
 export const validationErrorResponse = ({
   error,
   response
@@ -166,3 +142,32 @@ export const validationErrorResponse = ({
     message: messages.default.validationErrorResponse,
     response
   });
+
+export const messageErrorResponse = ({
+  error,
+  response
+}: {
+  error: unknown;
+  response: Response;
+}): Response => {
+  errorLogger(error);
+
+  if (error instanceof ValidationError) return validationErrorResponse({ error, response });
+
+  const newError = error as { message?: string; meta?: { cause: string; modelName: string } };
+  let message: messageTypeResponse | undefined;
+
+  if (error instanceof Error)
+    message =
+      typeof newError.message === 'undefined'
+        ? undefined
+        : {
+            english: newError.message,
+            portuguese: 'Erro interno do servidor...'
+          };
+
+  return badRequest({
+    message,
+    response
+  });
+};

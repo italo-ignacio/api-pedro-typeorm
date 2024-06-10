@@ -11,3 +11,4 @@ export * from './pagination';
 export * from './random';
 export * from './yup-resolver-errors';
 export * from './yup-variables';
+export * from './user-not-null';

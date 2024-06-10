@@ -1,13 +1,13 @@
 export type propertyQueryFields =
   | 'name'
   | 'totalArea'
-  | 'totalAreaGreaterThan'
   | 'totalAreaLessThan'
+  | 'totalAreaMoreThan'
   | 'userId';
 
 export const propertyListQueryFields: propertyQueryFields[] = [
   'name',
-  'totalAreaGreaterThan',
+  'totalAreaMoreThan',
   'totalAreaLessThan',
   'totalArea',
   'userId'

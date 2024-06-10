@@ -1,4 +1,4 @@
-import { DataSource } from '@infra/database';
+import { IsNull } from 'typeorm';
 import { ValidationError } from 'yup';
 import { authenticateSchema } from '@data/validation';
 import {
@@ -12,6 +12,7 @@ import {
 import { compare } from 'bcrypt';
 import { messages } from '@domain/helpers';
 import { userFindParams } from '@data/search';
+import { userRepository } from '@repository/user';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
 
@@ -45,12 +46,12 @@ interface Body {
  * @tags A Auth
  * @example request - payload example
  * {
- *   "email": "support@sp.senai.br",
- *   "password": "Senai@127"
+ *   "email": "support@support",
+ *   "password": "123456"
  * }
  * @param {LoginBody} request.body.required - application/json
  * @return {LoginResponse} 200 - Successful response - application/json
- * @return {BadRequest} 400 - Bad request response - application/json
+ * @return {BadRequestResponse} 400 - Bad request response - application/json
  */
 export const authenticateController: Controller =
   () => async (request: Request, response: Response) => {
@@ -59,9 +60,9 @@ export const authenticateController: Controller =
 
       const { email, password } = request.body as Body;
 
-      const user = await DataSource.user.findFirst({
-        select: { ...userFindParams, password: true },
-        where: { AND: { email, finishedAt: null } }
+      const user = await userRepository.findOne({
+        select: { ...userFindParams({}), password: true },
+        where: { email, finishedAt: IsNull() }
       });
 
       if (user === null) return badRequest({ message: messages.auth.notFound, response });

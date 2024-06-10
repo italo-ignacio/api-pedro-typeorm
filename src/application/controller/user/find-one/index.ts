@@ -1,6 +1,6 @@
-import { DataSource } from '@infra/database';
-import { errorLogger, messageErrorResponse, notFound, ok } from '@main/utils';
+import { messageErrorResponse, notFound, ok } from '@main/utils';
 import { userFindParams } from '@data/search';
+import { userRepository } from '@repository/user';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
 
@@ -16,18 +16,18 @@ import type { Request, Response } from 'express';
  * @summary Find one User
  * @tags User
  * @security BearerAuth
- * @param {integer} id.path.required
+ * @param {string} id.path.required
  * @return {FindOneUserResponse} 200 - Successful response - application/json
- * @return {BadRequest} 400 - Bad request response - application/json
- * @return {UnauthorizedRequest} 401 - Unauthorized response - application/json
+ * @return {BadRequestResponse} 400 - Bad request response - application/json
+ * @return {UnauthorizedResponse} 401 - Unauthorized response - application/json
  * @return {NotFoundRequest} 404 - Not found response - application/json
  */
 export const findOneUserController: Controller =
   () => async (request: Request, response: Response) => {
     try {
-      const payload = await DataSource.user.findUnique({
-        select: userFindParams,
-        where: { id: Number(request.params.id) }
+      const payload = await userRepository.findOne({
+        select: userFindParams({}),
+        where: { id: request.params.id }
       });
 
       if (payload === null)
@@ -41,8 +41,6 @@ export const findOneUserController: Controller =
         response
       });
     } catch (error) {
-      errorLogger(error);
-
       return messageErrorResponse({ error, response });
     }
   };

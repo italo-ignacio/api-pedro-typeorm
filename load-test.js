@@ -114,7 +114,6 @@ export default function () {
           zipCode: '00000-000',
           state: 'string',
           city: 'string',
-          municipality: 'string',
           street: 'string',
           number: Math.floor(Math.random() * 5000) + 1
         },
@@ -167,7 +166,6 @@ export default function () {
       // Update Address
       const updateAddressData = JSON.stringify({
         city: `Cidade Atualizada - ${Date.now()}`,
-        municipality: `Municipio Atualizado - ${Date.now()}`,
         state: `Estado Atualizado - ${Date.now()}`,
         street: `Rua Atualizada - ${Date.now()}`
       });

@@ -1,20 +1,10 @@
-import { DataSource } from '@infra/database';
-import { ValidationError } from 'yup';
-import {
-  badRequest,
-  errorLogger,
-  forbidden,
-  messageErrorResponse,
-  ok,
-  validationErrorResponse,
-  whereById
-} from '@main/utils';
+import { badRequest, forbidden, messageErrorResponse, ok } from '@main/utils';
 import { env } from '@main/config';
 import { hasUserByEmail, userIsOwner } from '@application/helper';
 import { hash } from 'bcrypt';
 import { messages } from '@domain/helpers';
 import { updateUserSchema } from '@data/validation';
-import { userFindParams } from '@data/search';
+import { userRepository } from '@repository/user';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
 
@@ -34,23 +24,16 @@ interface Body {
  */
 
 /**
- * @typedef {object} UpdateUserResponse
- * @property {Messages} message
- * @property {string} status
- * @property {User} payload
- */
-
-/**
  * PUT /user/{id}
  * @summary Update User
  * @tags User
  * @security BearerAuth
  * @param {UpdateUserBody} request.body
- * @param {integer} id.path.required
- * @return {UpdateUserResponse} 200 - Successful response - application/json
- * @return {BadRequest} 400 - Bad request response - application/json
- * @return {UnauthorizedRequest} 401 - Unauthorized response - application/json
- * @return {ForbiddenRequest} 403 - Forbidden response - application/json
+ * @param {string} id.path.required
+ * @return {UpdateResponse} 200 - Successful response - application/json
+ * @return {BadRequestResponse} 400 - Bad request response - application/json
+ * @return {UnauthorizedResponse} 401 - Unauthorized response - application/json
+ * @return {ForbiddenResponse} 403 - Forbidden response - application/json
  */
 export const updateUserController: Controller =
   () => async (request: Request, response: Response) => {
@@ -66,7 +49,10 @@ export const updateUserController: Controller =
       const { email, name, password, phone } = request.body as Body;
 
       if (await hasUserByEmail(email))
-        return badRequest({ message: messages.default.userAlreadyExists, response });
+        return badRequest({
+          message: messages.default.alreadyExists({ english: 'User', portuguese: 'Usuário' }),
+          response
+        });
 
       let newPassword: string | undefined;
 
@@ -82,20 +68,14 @@ export const updateUserController: Controller =
 
       if (typeof phone === 'string') newPhone = phone.replace(/\D/gu, '');
 
-      const payload = await DataSource.user.update({
-        data: { email, name, password: newPassword, phone: newPhone },
-        select: userFindParams,
-        where: whereById(request.params.id)
-      });
+      await userRepository.update(
+        { id: request.params.id },
+        { email, name, password: newPassword, phone: newPhone }
+      );
 
-      return ok({ payload, response });
+      return ok({ payload: messages.default.successfullyUpdated, response });
     } catch (error) {
-      errorLogger(error);
-
-      if (error instanceof ValidationError) return validationErrorResponse({ error, response });
-
       return messageErrorResponse({
-        entity: { english: 'User', portuguese: 'Usuário' },
         error,
         response
       });

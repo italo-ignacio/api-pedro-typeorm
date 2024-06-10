@@ -6,7 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { UserEntity } from '@entity/user';
+import { FlockEntity } from '@entity/flock';
+import { PropertyEntity } from '@entity/property';
 
 @Entity('project')
 export class ProjectEntity {
@@ -16,13 +17,16 @@ export class ProjectEntity {
   @Column({ length: 255, type: 'varchar' })
   public name: string;
 
-  @ManyToOne(() => UserEntity, (user) => user.projects)
-  public user: UserEntity;
+  @ManyToOne(() => PropertyEntity, (property) => property.projects)
+  public property: PropertyEntity;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  @ManyToOne(() => FlockEntity, (flock) => flock.projects)
+  public flock: FlockEntity;
+
+  @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', nullable: true, type: 'timestamp' })
+  @UpdateDateColumn({ nullable: true, type: 'timestamp' })
   public updatedAt: Date | null;
 
   @Column({ name: 'finishedAt', nullable: true, type: 'timestamp' })
@@ -31,14 +35,16 @@ export class ProjectEntity {
   public constructor(
     id: string,
     name: string,
-    user: UserEntity,
+    property: PropertyEntity,
+    flock: FlockEntity,
     createdAt: Date,
     updatedAt: Date | null,
     finishedAt: Date | null
   ) {
     this.id = id;
     this.name = name;
-    this.user = user;
+    this.property = property;
+    this.flock = flock;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.finishedAt = finishedAt;

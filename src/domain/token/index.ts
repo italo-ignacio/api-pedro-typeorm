@@ -1,7 +1,7 @@
 import type { Role } from '@domain/enum';
 
 export interface tokenInput {
-  id: number;
+  id: string;
   name: string;
   email: string;
   role: Role;
