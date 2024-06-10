@@ -1,5 +1,5 @@
 import { IsNull } from 'typeorm';
-import { userRepository } from '@repository/user';
+import { userRepository } from '@infra/repository';
 
 export const hasUserByEmail = async (email?: string): Promise<boolean> => {
   if (typeof email !== 'string') return false;

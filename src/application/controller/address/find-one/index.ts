@@ -1,5 +1,5 @@
 import { addressFindParams } from '@data/search';
-import { addressRepository } from '@repository/address';
+import { addressRepository } from '@infra/repository';
 import { messageErrorResponse, notFound, ok } from '@main/utils';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';

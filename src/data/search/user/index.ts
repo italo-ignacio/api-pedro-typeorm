@@ -1,5 +1,5 @@
 import type { FindOptionsSelect } from 'typeorm';
-import type { UserEntity } from '@entity/user';
+import type { UserEntity } from '@domain/entity';
 
 export const userFindParams = (
   values: FindOptionsSelect<UserEntity>

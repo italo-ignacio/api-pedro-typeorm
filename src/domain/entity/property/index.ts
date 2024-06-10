@@ -1,4 +1,4 @@
-import { AddressEntity } from '@entity/address';
+import { AddressEntity } from '@domain/entity/address';
 import {
   Column,
   CreateDateColumn,
@@ -10,9 +10,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { FlockEntity } from '@entity/flock';
-import { ProjectEntity } from '@entity/project';
-import { UserEntity } from '@entity/user';
+import { FlockEntity } from '@domain/entity/flock';
+import { ProjectEntity } from '@domain/entity/project';
+import { UserEntity } from '@domain/entity/user';
 
 @Entity('property')
 export class PropertyEntity {

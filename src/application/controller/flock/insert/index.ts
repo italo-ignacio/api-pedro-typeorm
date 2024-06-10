@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys-fix/sort-keys-fix */
 import { IsNull } from 'typeorm';
-import { flockRepository } from '@repository/flock';
+import { flockRepository } from '@infra/repository';
 import { forbidden, messageErrorResponse, ok } from '@main/utils';
 import { insertFlockSchema } from '@data/validation';
 import { messages } from '@domain/helpers';

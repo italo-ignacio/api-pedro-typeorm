@@ -2,26 +2,34 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { FlockEntity } from '@entity/flock';
-import { PropertyEntity } from '@entity/property';
+import { PropertyEntity } from '@domain/entity/property';
 
-@Entity('project')
-export class ProjectEntity {
+@Entity('address')
+export class AddressEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
+  @Column({ length: 9, type: 'varchar' })
+  public zipCode: string;
+
+  @Column({ length: 50, type: 'varchar' })
+  public state: string;
+
+  @Column({ length: 50, type: 'varchar' })
+  public city: string;
+
   @Column({ length: 255, type: 'varchar' })
-  public name: string;
+  public street: string;
 
-  @ManyToOne(() => PropertyEntity, (property) => property.projects)
+  @Column({ length: 20, type: 'varchar' })
+  public number: string;
+
+  @OneToOne(() => PropertyEntity, (property) => property.address)
   public property: PropertyEntity;
-
-  @ManyToOne(() => FlockEntity, (flock) => flock.projects)
-  public flock: FlockEntity;
 
   @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
@@ -34,17 +42,23 @@ export class ProjectEntity {
 
   public constructor(
     id: string,
-    name: string,
+    zipCode: string,
+    state: string,
+    city: string,
+    street: string,
+    number: string,
     property: PropertyEntity,
-    flock: FlockEntity,
     createdAt: Date,
     updatedAt: Date | null,
     finishedAt: Date | null
   ) {
     this.id = id;
-    this.name = name;
+    this.zipCode = zipCode;
+    this.state = state;
+    this.city = city;
+    this.street = street;
+    this.number = number;
     this.property = property;
-    this.flock = flock;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.finishedAt = finishedAt;

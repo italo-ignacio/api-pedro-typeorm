@@ -1,6 +1,6 @@
 import { messageErrorResponse, notFound, ok } from '@main/utils';
 import { userFindParams } from '@data/search';
-import { userRepository } from '@repository/user';
+import { userRepository } from '@infra/repository';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
 

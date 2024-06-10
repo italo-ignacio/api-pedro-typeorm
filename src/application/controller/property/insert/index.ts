@@ -4,7 +4,7 @@ import { forbidden, messageErrorResponse, notFound, ok } from '@main/utils';
 import { hasUserById } from '@application/helper';
 import { insertPropertySchema } from '@data/validation';
 import { messages } from '@domain/helpers';
-import { propertyRepository } from '@repository/property';
+import { propertyRepository } from '@infra/repository';
 import type { Controller } from '@domain/protocols';
 import type { InsertAddressBody } from '@application/controller/address';
 import type { Request, Response } from 'express';

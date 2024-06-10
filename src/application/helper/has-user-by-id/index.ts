@@ -1,5 +1,5 @@
 import { IsNull } from 'typeorm';
-import { userRepository } from '@repository/user';
+import { userRepository } from '@infra/repository';
 
 export const hasUserById = async (id?: string): Promise<boolean> => {
   if (typeof id === 'undefined') return false;

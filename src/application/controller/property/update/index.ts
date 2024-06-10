@@ -1,6 +1,6 @@
 import { forbidden, messageErrorResponse, ok } from '@main/utils';
 import { messages } from '@domain/helpers';
-import { propertyRepository } from '@repository/property';
+import { propertyRepository } from '@infra/repository';
 import { updatePropertySchema } from '@data/validation';
 import { userIsOwnerOfProperty } from '@application/helper';
 import type { Controller } from '@domain/protocols';

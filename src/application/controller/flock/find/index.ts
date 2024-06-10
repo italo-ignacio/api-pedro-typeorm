@@ -1,6 +1,6 @@
 import { flockFindParams } from '@data/search';
 import { flockListQueryFields } from '@data/validation';
-import { flockRepository } from '@repository/flock';
+import { flockRepository } from '@infra/repository';
 import { getGenericFilter, getPagination, messageErrorResponse, ok } from '@main/utils';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';

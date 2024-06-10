@@ -1,5 +1,5 @@
 import { flockFindParams } from '@data/search';
-import { flockRepository } from '@repository/flock';
+import { flockRepository } from '@infra/repository';
 import { messageErrorResponse, notFound, ok } from '@main/utils';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';

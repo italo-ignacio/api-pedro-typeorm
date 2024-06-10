@@ -2,27 +2,35 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
-import { ProjectEntity } from '@entity/project';
-import { PropertyEntity } from '@entity/property';
+import { PropertyEntity } from '@domain/entity/property';
+import { Role } from '@domain/enum';
 
-@Entity('flock')
-export class FlockEntity {
+@Entity('user')
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   public id: string;
 
   @Column({ length: 255, type: 'varchar' })
   public name: string;
 
-  @ManyToOne(() => PropertyEntity, (property) => property.flocks)
-  public property: PropertyEntity;
+  @Column({ type: 'varchar' })
+  public password: string;
 
-  @OneToMany(() => ProjectEntity, (project) => project.flock)
-  public projects: ProjectEntity[];
+  @Column({ type: 'varchar' })
+  public email: string;
+
+  @Column({ length: 15, type: 'varchar' })
+  public phone: string;
+
+  @Column({ default: Role.COMMON, type: 'varchar' })
+  public role: Role;
+
+  @OneToMany(() => PropertyEntity, (property) => property.user)
+  public properties: PropertyEntity[];
 
   @CreateDateColumn({ type: 'timestamp' })
   public createdAt: Date;
@@ -36,16 +44,22 @@ export class FlockEntity {
   public constructor(
     id: string,
     name: string,
-    property: PropertyEntity,
-    projects: ProjectEntity[],
+    email: string,
+    password: string,
+    phone: string,
+    role: Role,
+    properties: PropertyEntity[],
     createdAt: Date,
     updatedAt: Date | null,
     finishedAt: Date | null
   ) {
     this.id = id;
     this.name = name;
-    this.property = property;
-    this.projects = projects;
+    this.password = password;
+    this.email = email;
+    this.phone = phone;
+    this.role = role;
+    this.properties = properties;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.finishedAt = finishedAt;

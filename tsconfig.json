@@ -19,8 +19,6 @@
       "@main/*": ["main/*"],
       "@data/*": ["data/*"],
       "@domain/*": ["domain/*"],
-      "@entity/*": ["entity/*"],
-      "@repository/*": ["repository/*"],
       "@infra/*": ["infra/*"],
       "@application/*": ["application/*"]
     },

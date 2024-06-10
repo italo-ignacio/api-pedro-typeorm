@@ -2,7 +2,7 @@ import { IsNull } from 'typeorm';
 import { getGenericFilter, getPagination, messageErrorResponse, ok } from '@main/utils';
 import { propertyFindParams } from '@data/search';
 import { propertyListQueryFields } from '@data/validation';
-import { propertyRepository } from '@repository/property';
+import { propertyRepository } from '@infra/repository';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
 import type { propertyQueryFields } from '@data/validation';

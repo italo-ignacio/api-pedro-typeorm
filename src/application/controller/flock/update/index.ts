@@ -1,7 +1,6 @@
-import { flockRepository } from '@repository/flock';
+import { flockRepository, projectRepository } from '@infra/repository';
 import { forbidden, messageErrorResponse, ok } from '@main/utils';
 import { messages } from '@domain/helpers';
-import { projectRepository } from '@repository/project';
 import { updateFlockSchema } from '@data/validation';
 import { userIsOwnerOfFlock } from '@application/helper';
 import type { Controller } from '@domain/protocols';

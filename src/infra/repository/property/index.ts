@@ -1,4 +1,4 @@
 import { DataSource } from '@infra/database';
-import { PropertyEntity } from '@entity/property';
+import { PropertyEntity } from '@domain/entity';
 
 export const propertyRepository = DataSource.getRepository(PropertyEntity);

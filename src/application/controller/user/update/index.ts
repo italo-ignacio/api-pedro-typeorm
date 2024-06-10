@@ -4,7 +4,7 @@ import { hasUserByEmail, userIsOwner } from '@application/helper';
 import { hash } from 'bcrypt';
 import { messages } from '@domain/helpers';
 import { updateUserSchema } from '@data/validation';
-import { userRepository } from '@repository/user';
+import { userRepository } from '@infra/repository';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
 

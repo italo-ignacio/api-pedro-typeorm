@@ -1,7 +1,6 @@
-import { addressRepository } from '@repository/address';
+import { addressRepository, propertyRepository } from '@infra/repository';
 import { forbidden, messageErrorResponse, notFound, ok } from '@main/utils';
 import { messages } from '@domain/helpers';
-import { propertyRepository } from '@repository/property';
 import { updateAddressSchema } from '@data/validation';
 import { userIsOwnerOfProperty } from '@application/helper';
 import type { Controller } from '@domain/protocols';

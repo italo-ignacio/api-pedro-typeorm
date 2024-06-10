@@ -1,6 +1,6 @@
 import { addressFindParams } from '@data/search';
 import { addressListQueryFields } from '@data/validation';
-import { addressRepository } from '@repository/address';
+import { addressRepository } from '@infra/repository';
 import { getGenericFilter, getPagination, messageErrorResponse, ok } from '@main/utils';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';

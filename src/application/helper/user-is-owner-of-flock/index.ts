@@ -1,6 +1,6 @@
 import { IsNull } from 'typeorm';
 import { Role } from '@domain/enum';
-import { flockRepository } from '@repository/flock';
+import { flockRepository } from '@infra/repository';
 import { userNotNull } from '@main/utils';
 import type { Request } from 'express';
 

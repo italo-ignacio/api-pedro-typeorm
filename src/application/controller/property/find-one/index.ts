@@ -1,6 +1,6 @@
 import { messageErrorResponse, notFound, ok } from '@main/utils';
 import { propertyFindParams } from '@data/search';
-import { propertyRepository } from '@repository/property';
+import { propertyRepository } from '@infra/repository';
 import type { Controller } from '@domain/protocols';
 import type { Request, Response } from 'express';
 

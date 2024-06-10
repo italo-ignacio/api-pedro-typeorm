@@ -1,5 +1,5 @@
 import type { FindOptionsSelect } from 'typeorm';
-import type { FlockEntity } from '@entity/flock';
+import type { FlockEntity } from '@domain/entity';
 
 export const flockFindParams = (
   values: FindOptionsSelect<FlockEntity>

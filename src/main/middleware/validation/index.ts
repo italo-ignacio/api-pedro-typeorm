@@ -1,6 +1,6 @@
 import { DataSource } from '@infra/database';
 import { IsNull } from 'typeorm';
-import { UserEntity } from '@entity/user';
+import { UserEntity } from '@domain/entity';
 import { env } from '@main/config/env';
 import { errorLogger, removeBearer, unauthorized } from '@main/utils';
 import { verify } from 'jsonwebtoken';

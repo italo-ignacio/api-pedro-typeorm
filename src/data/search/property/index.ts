@@ -1,6 +1,6 @@
 import { addressFindParams } from '../address';
 import type { FindOptionsSelect } from 'typeorm';
-import type { PropertyEntity } from '@entity/property';
+import type { PropertyEntity } from '@domain/entity';
 
 export const propertyFindParams = (
   values: FindOptionsSelect<PropertyEntity>

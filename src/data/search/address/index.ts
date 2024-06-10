@@ -1,4 +1,4 @@
-import type { AddressEntity } from '@entity/address';
+import type { AddressEntity } from '@domain/entity';
 import type { FindOptionsSelect } from 'typeorm';
 
 export const addressFindParams = (

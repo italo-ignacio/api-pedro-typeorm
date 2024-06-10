@@ -1,5 +1,5 @@
 import type { FindOptionsSelect } from 'typeorm';
-import type { ProjectEntity } from '@entity/project';
+import type { ProjectEntity } from '@domain/entity';
 
 export const projectFindParams = (
   values: FindOptionsSelect<ProjectEntity>
