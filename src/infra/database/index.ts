@@ -5,7 +5,7 @@ const rootPath = typeof process.env.TS_NODE_DEV === 'undefined' ? 'build' : 'src
 
 export const DataSource = new TypeOrmDataSource({
   database: env.DATABASE.name,
-  entities: [`${rootPath}/entity/**/*`],
+  entities: [`${rootPath}/domain/entity/**/*`],
   host: env.DATABASE.host,
   logging: [],
   password: env.DATABASE.password,
