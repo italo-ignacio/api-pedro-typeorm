@@ -3,15 +3,17 @@ import { env } from '@main/config/env';
 
 const rootPath = typeof process.env.TS_NODE_DEV === 'undefined' ? 'build' : 'src';
 
+const { DATABASE } = env;
+
 export const DataSource = new TypeOrmDataSource({
-  database: env.DATABASE.name,
+  database: DATABASE.name,
   entities: [`${rootPath}/domain/entity/**/*`],
-  host: env.DATABASE.host,
+  host: DATABASE.host,
   logging: [],
-  password: env.DATABASE.password,
-  port: Number(env.DATABASE.port),
-  ssl: env.DATABASE.ssl,
-  synchronize: env.DATABASE.synchronize,
+  password: DATABASE.password,
+  port: Number(DATABASE.port),
+  ssl: DATABASE.ssl,
+  synchronize: DATABASE.synchronize,
   type: 'postgres',
-  username: env.DATABASE.userName
+  username: DATABASE.userName
 });

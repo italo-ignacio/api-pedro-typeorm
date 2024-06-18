@@ -26,7 +26,7 @@ export class UserEntity {
   @Column({ length: 15, type: 'varchar' })
   public phone: string;
 
-  @Column({ default: Role.COMMON, type: 'varchar' })
+  @Column({ default: Role.COMMON, enum: Role, type: 'enum' })
   public role: Role;
 
   @OneToMany(() => PropertyEntity, (property) => property.user)
