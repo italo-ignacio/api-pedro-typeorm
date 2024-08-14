@@ -80,7 +80,7 @@ export const getGenericFilter = <QueryType extends string>({
 
   if (typeof query.orderBy === 'string' && checkOrder(query as queryProps, list))
     Object.assign(orderBy, { [query.orderBy]: query.sort });
-  // 2024-06-10T16:44:06.505Z  -  2024-06-10T17:19:23.388Z
+
   for (const item of list)
     if (typeof query[item] === 'string')
       if (item.endsWith('MoreThan'))
